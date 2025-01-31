@@ -96,9 +96,15 @@ function updateEntriesList(sortBy = null, filterBy = 'all') {
                 <p><strong>Phone:</strong> ${entry.phone}</p>
                 <p><strong>Email:</strong> ${entry.email || 'N/A'}</p>
                 <p><strong>Result:</strong> ${entry.result}</p>
+                <button class="deleteButton" data-id="${entry.id}">Delete</button>
             `;
 
             entriesList.appendChild(entryDiv);
+        });
+
+        // Add event listeners to delete buttons
+        document.querySelectorAll('.deleteButton').forEach(button => {
+            button.addEventListener('click', deleteEntry);
         });
     };
 
@@ -112,6 +118,40 @@ function extractAddressNumber(address) {
     const numberMatch = address.match(/\d+/);
     return numberMatch ? parseInt(numberMatch[0], 10) : 0;
 }
+
+// Delete an entry
+function deleteEntry(event) {
+    const entryId = parseInt(event.target.getAttribute('data-id'), 10);
+
+    const transaction = db.transaction(['entries'], 'readwrite');
+    const objectStore = transaction.objectStore('entries');
+    const request = objectStore.delete(entryId);
+
+    request.onsuccess = function() {
+        console.log('Entry deleted successfully');
+        updateEntriesList(); // Refresh the displayed list
+    };
+
+    request.onerror = function(event) {
+        console.error('Error deleting entry:', event.target.error);
+    };
+}
+
+// Delete all entries
+document.getElementById('deleteAll').addEventListener('click', function() {
+    const transaction = db.transaction(['entries'], 'readwrite');
+    const objectStore = transaction.objectStore('entries');
+    const request = objectStore.clear();
+
+    request.onsuccess = function() {
+        console.log('All entries deleted successfully');
+        updateEntriesList(); // Refresh the displayed list
+    };
+
+    request.onerror = function(event) {
+        console.error('Error deleting all entries:', event.target.error);
+    };
+});
 
 // Sorting and filtering event listeners
 document.getElementById('sortEven').addEventListener('click', () => updateEntriesList('even'));

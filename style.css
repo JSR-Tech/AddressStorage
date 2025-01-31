@@ -68,6 +68,14 @@ button:hover {
     background-color: #0056b3;
 }
 
+#deleteAll {
+    background-color: #dc3545;
+}
+
+#deleteAll:hover {
+    background-color: #c82333;
+}
+
 #entriesList {
     margin-top: 20px;
 }
@@ -78,8 +86,25 @@ button:hover {
     margin-bottom: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
+    position: relative;
 }
 
 .entry p {
     margin: 5px 0;
+}
+
+.deleteButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.deleteButton:hover {
+    background-color: #c82333;
 }
