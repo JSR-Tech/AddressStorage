@@ -27,10 +27,16 @@ request.onerror = function(event) {
 document.getElementById('dataForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const name = document.getElementById('name').value;
+    const name = document.getElementById('name').value || 'N/A';
     const address = document.getElementById('address').value;
-    const phone = document.getElementById('phone').value;
-    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value || 'N/A';
+    const email = document.getElementById('email').value || 'N/A';
+    const emergencyContact1 = document.getElementById('emergencyContact1').value || 'N/A';
+    const emergencyContact2 = document.getElementById('emergencyContact2').value || 'N/A';
+    const dob = document.getElementById('dob').value || 'N/A';
+    const idType = document.getElementById('idType').value || 'N/A';
+    const idNumber = document.getElementById('idNumber').value || 'N/A';
+    const idExpiry = document.getElementById('idExpiry').value || 'N/A';
     const result = document.getElementById('result').value;
 
     // Start a transaction
@@ -38,7 +44,19 @@ document.getElementById('dataForm').addEventListener('submit', function(event) {
     const objectStore = transaction.objectStore('entries');
 
     // Add the data to the object store
-    const request = objectStore.add({ name, address, phone, email, result });
+    const request = objectStore.add({
+        name,
+        address,
+        phone,
+        email,
+        emergencyContact1,
+        emergencyContact2,
+        dob,
+        idType,
+        idNumber,
+        idExpiry,
+        result
+    });
 
     request.onsuccess = function() {
         console.log('Entry added successfully');
@@ -94,7 +112,13 @@ function updateEntriesList(sortBy = null, filterBy = 'all') {
                 <p><strong>Name:</strong> ${entry.name}</p>
                 <p><strong>Address:</strong> ${entry.address}</p>
                 <p><strong>Phone:</strong> ${entry.phone}</p>
-                <p><strong>Email:</strong> ${entry.email || 'N/A'}</p>
+                <p><strong>Email:</strong> ${entry.email}</p>
+                <p><strong>Emergency Contact 1:</strong> ${entry.emergencyContact1}</p>
+                <p><strong>Emergency Contact 2:</strong> ${entry.emergencyContact2}</p>
+                <p><strong>Date of Birth:</strong> ${entry.dob}</p>
+                <p><strong>ID Type:</strong> ${entry.idType}</p>
+                <p><strong>ID Number:</strong> ${entry.idNumber}</p>
+                <p><strong>ID Expiry Date:</strong> ${entry.idExpiry}</p>
                 <p><strong>Result:</strong> ${entry.result}</p>
                 <button class="deleteButton" data-id="${entry.id}">Delete</button>
             `;
